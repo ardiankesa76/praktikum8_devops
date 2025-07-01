@@ -2,13 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                echo '📥 Cloning repository from main branch...'
-                git branch: 'main', url: 'https://github.com/ardiankesa76/praktikum8_devops.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 echo '🔧 Building Docker image...'
@@ -19,7 +12,6 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 echo '🧪 Running unit tests with PHPUnit...'
-                // Catch error agar pipeline tidak langsung berhenti jika test gagal
                 catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                     sh 'docker run --rm php-ci-cd phpunit tests'
                 }
