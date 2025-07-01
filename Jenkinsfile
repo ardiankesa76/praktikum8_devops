@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/ardiankesa76/praktikum8_devops.git' // Ganti dengan repo kamu
+                git branch: 'main', url: 'https://github.com/ardiankesa76/praktikum8_devops.git'
             }
         }
 
