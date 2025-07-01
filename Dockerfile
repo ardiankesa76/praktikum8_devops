@@ -7,11 +7,8 @@ WORKDIR /var/www/html
 # Salin semua file dari direktori saat ini (workspace Jenkins) ke dalam direktori kerja kontainer
 COPY . .
 
-# Perbaikan untuk "dubious ownership" Git: Beri tahu Git bahwa direktori ini aman
-# Ini penting karena file disalin oleh root, tetapi Composer mungkin dijalankan oleh user lain
-RUN git config --global --add safe.directory /var/www/html
-
 # Instal dependensi sistem yang diperlukan:
+# PASTIKAN GIT DIINSTAL DI SINI, SEBELUM DIGUNAKAN!
 RUN apt-get update && \
     apt-get install -y \
     unzip \
@@ -19,6 +16,10 @@ RUN apt-get update && \
     curl \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
+
+# Perbaikan untuk "dubious ownership" Git: Beri tahu Git bahwa direktori ini aman
+# Sekarang Git sudah terinstal, jadi perintah ini akan berfungsi
+RUN git config --global --add safe.directory /var/www/html
 
 # Instal Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
